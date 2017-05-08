@@ -9,38 +9,40 @@ var io = require('socket.io')(server);
 var Repeat = require('repeat');
 var $ = require("jquery");
 
-/* empty sequencer on server start */
-var sequencerState = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],
-                      [0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],
-                      [0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],
-                      [0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+var users = 0;
+
+/* 4/4 kick on server start */
+var sequencerState = [[1,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],
+                      [1,1,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],
+                      [1,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],
+                      [1,1,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
 
 app.use(express.static('public'));
 
 io.on('connection', function(socket){
   var userID = socket.id;
   console.log('a user connected ' + userID);
+  users++;
+  console.log(users + ' users connected ');
+  io.emit('userChange', users);
 
   socket.on('sequenceToServer', function(data, matrix) {
     console.log('incoming');
     console.log(data);
     sequencerState = matrix;
     console.log(sequencerState);
-    socket.emit('sequenceFromServer', data, sequencerState)
+    io.emit('sequenceFromServer', data, sequencerState)
   });
 
   socket.on('initRequest', function() {
     console.log(sequencerState);
-    socket.emit('initSend', sequencerState);
-  });
-
-  socket.on('test', function() {
-    console.log('test received');
-    socket.emit('test2');
+    io.emit('initSend', sequencerState);
   });
 
   socket.on('disconnect', function(){
     console.log('user disconnected ' + socket.id);
+    users--
+    io.emit('userChange', users);
   });
 });
 

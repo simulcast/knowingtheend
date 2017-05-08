@@ -5,6 +5,35 @@ html, body {
 	width: 100%;
 }
 
+body {
+	background: linear-gradient(180deg, orange, purple, red, blue);
+	background-size: 600% 600%;
+
+	-webkit-animation: sunsets 25s ease infinite;
+	-moz-animation: sunsets 25s ease infinite;
+	animation: sunsets 25s ease infinite;
+}
+@-webkit-keyframes sunsets {
+    0%{background-position:51% 0%}
+    50%{background-position:50% 100%}
+    100%{background-position:51% 0%}
+}
+@-moz-keyframes sunsets {
+    0%{background-position:51% 0%}
+    50%{background-position:50% 100%}
+    100%{background-position:51% 0%}
+}
+@keyframes sunsets { 
+    0%{background-position:51% 0%}
+    50%{background-position:50% 100%}
+    100%{background-position:51% 0%}
+}
+
+#matrix1 {
+	position: absolute;
+	bottom: 0px;
+}
+
 .pure-g {
 	height: 50%;
 }

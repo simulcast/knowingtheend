@@ -11,6 +11,17 @@ guitar activated by _________
 */
 
 $(document).ready(function() {
+
+	socket.on('userChange', function(users){
+		console.log('userchange received: ' + users + ' users online');
+		if (users == 1) {
+			$('#usernumber').html(users + " listener");
+		}
+		if (users > 1) {
+			$('#usernumber').html(users + " listeners");		
+		}
+	})
+
 	//pass in the audio context
 	var context = new AudioContext();
 
@@ -48,7 +59,7 @@ $(document).ready(function() {
 
 		Tone.Transport.schedule(function(time){
 			sequencer.start();
-		}, "2m");
+		}, "4m");
 		
 		Tone.Transport.scheduleRepeat(function(time){
 			//drums1.start();
@@ -81,15 +92,17 @@ $(document).ready(function() {
         "snare" : "../sound/snare.wav",
         "ch" : "../sound/ch.wav",
         "oh" : "../sound/oh.wav",
+        "lotom" : "../sound/lotom.wav",
+        "hitom" : "../sound/hitom.wav"
       },
       volume : 0,
       fadeOut : 0.1,
     }).toMaster();
     //the notes
-    var noteNames = ["kick", "snare", "ch", "oh"];
+    var noteNames = ["kick", "snare", "ch", "oh", "lotom", "hitom"];
     var sequencer = new Tone.Sequence(function(time, col){
 		var column = matrix1.matrix[col];
-		for (var i = 0; i < 4; i++){
+		for (var i = 0; i < 6; i++){
 			if (column[i] === 1){
 			  drumkit.start(noteNames[i], time, 0, "16n", 0, 1);
 			}
@@ -97,10 +110,12 @@ $(document).ready(function() {
     }, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0], "16n");
     // GUI //
     nx.onload = function(){
-		nx.colorize("dodgerblue");
+		nx.colorize("fill", "rgba(255,255,255,.3)");
+		nx.colorize("accent", "rgba(0,255,255,.3)");
 		matrix1.col = 16;
+		matrix1.row = 6;
 		matrix1.init();
-		matrix1.resize($("#Content").width(), 250);
+		matrix1.resize($("#Content").width(), 300);
 		matrix1.draw();
 		socket.emit('initRequest');
 		matrix1.on("*", function(data) {
@@ -111,7 +126,7 @@ $(document).ready(function() {
 		});
     }
     $(window).on("resize", function(){
-		matrix1.resize($("#Content").width(), 250);
+		matrix1.resize($("#Content").width(), 300);
 		matrix1.draw(); 
     });
     
@@ -125,16 +140,6 @@ $(document).ready(function() {
 	socket.on('sequenceFromServer', function(data, sequencerState){
 	    console.log('new sequence from server');
 	    console.log(sequencerState);
-	    /*
-		var value = data.level ? 1 : 0;
-		matrix1.matrix[data.col][data.row] = value;
-
-		matrix1.val = {
-			row: data.row,
-			col: data.col,
-			level: value
-		}
-		*/
 		matrix1.matrix = sequencerState;
 		matrix1.draw();
 	});
