@@ -9,9 +9,9 @@ body {
 	background: linear-gradient(180deg, orange, purple, red, blue);
 	background-size: 600% 600%;
 
-	-webkit-animation: sunsets 25s ease infinite;
-	-moz-animation: sunsets 25s ease infinite;
-	animation: sunsets 25s ease infinite;
+	-webkit-animation: sunsets 30s ease infinite;
+	-moz-animation: sunsets 30s ease infinite;
+	animation: sunsets 30s ease infinite;
 }
 @-webkit-keyframes sunsets {
     0%{background-position:51% 0%}

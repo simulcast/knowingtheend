@@ -4,10 +4,12 @@ add redundancies for play / stop toggles on user side (if it's playing, don't le
 
 var express = require('express');  
 var app = express();  
-var server = require('http').createServer(app);  
+var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var Repeat = require('repeat');
 var $ = require("jquery");
+
+app.use(express.static('public'));
 
 var users = 0;
 
@@ -16,8 +18,6 @@ var sequencerState = [[1,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],
                       [1,1,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],
                       [1,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],
                       [1,1,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
-
-app.use(express.static('public'));
 
 io.on('connection', function(socket){
   var userID = socket.id;

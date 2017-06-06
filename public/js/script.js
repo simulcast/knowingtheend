@@ -33,7 +33,7 @@ $(document).ready(function() {
 	var drone = new Tone.Player("../sound/kte-ebow.wav").toMaster();
 	drone.volume.setValueAtTime(-10, 0);
 	var drums1 = new Tone.Player("../sound/kte-drum1.wav").toMaster();
-	drums1.volume.setValueAtTime(-5, 0);
+	drums1.volume.setValueAtTime(0, 0);
 	var vox = new Tone.Player("../sound/kte-voxstem.wav").toMaster();
 	vox.volume.setValueAtTime(-10, 0);
 	var gtr = new Tone.Player("../sound/kte-gtrstem.wav").toMaster();
@@ -62,7 +62,7 @@ $(document).ready(function() {
 		}, "4m");
 		
 		Tone.Transport.scheduleRepeat(function(time){
-			//drums1.start();
+			drums1.start();
 		}, "2m", "2m");
 		
 		Tone.Transport.schedule(function(time){
@@ -95,7 +95,7 @@ $(document).ready(function() {
         "lotom" : "../sound/lotom.wav",
         "hitom" : "../sound/hitom.wav"
       },
-      volume : 0,
+      volume : .5,
       fadeOut : 0.1,
     }).toMaster();
     //the notes
